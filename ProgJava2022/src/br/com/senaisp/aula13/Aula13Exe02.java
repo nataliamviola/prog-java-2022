@@ -8,7 +8,7 @@ public class Aula13Exe02 {
 		// TODO Auto-generated method stub
 		int intNum [] = new int [10];
 		Scanner sc = new Scanner (System.in);
-		//entrando com os nomes
+		//entrando com os numeros
 		for (int intI=0; intI<10; intI++) {
 			System.out.println("Digite o numero desejado - posição " + (intI + 1)+":");
 			intNum[intI] = sc.nextInt();
