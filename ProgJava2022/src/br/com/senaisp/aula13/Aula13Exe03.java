@@ -122,7 +122,7 @@ public class Aula13Exe03 {
 			}
 			
 		}while(intOpc!=9);
-
+		sc.close();
 	}
 
 }
