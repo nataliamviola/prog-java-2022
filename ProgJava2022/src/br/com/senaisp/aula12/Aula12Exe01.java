@@ -47,6 +47,7 @@ public class Aula12Exe01 {
 				System.out.print(strAss[intLin][intCol] + "  ");
 			}
 			System.out.println();
+			
 		}
 	}
 }
