@@ -4,7 +4,8 @@ public class ConversorTemperatura {
 	private int tipotempOri;
 	private int tipotempDes;
 	private double temperatura;
-	public ConversorTemperatura() {
+	//criando um constructor
+	public ConversorTemperatura() { //o constructor tem o "public" e o nome da classe. Nunca tem o tipo "double ou int ou string"
 		// TODO Auto-generated constructor stub
 		this.tipotempOri = 1; //Tipo temperatura origem
 		this.tipotempDes = 1;//Tipo temperatura destino

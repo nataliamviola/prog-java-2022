@@ -1,4 +1,4 @@
-package br.com.senaisp.aula17.classes;
+package br.com.senaisp.aula18.classes;
 /**
  * Clase Base para Calculo de Imposto
  * @author Natalia
