@@ -10,6 +10,4 @@ public class Humano extends Mamiferos {
 	public void setCorPele(String corPele) {
 		CorPele = corPele;
 	}
-	
-
 }

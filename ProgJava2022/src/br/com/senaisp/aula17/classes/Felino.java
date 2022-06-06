@@ -12,8 +12,7 @@ public class Felino extends Mamiferos {
 	}
 	@Override
 	public void Falar() {
-		// TODO Auto-generated method stub
-		super.Falar();
-		System.out.println("Felino Falando!");
+		super.Falar(); //Aqui o Mamifero vai falar
+		System.out.println("Felino Falando");
 	}
 }

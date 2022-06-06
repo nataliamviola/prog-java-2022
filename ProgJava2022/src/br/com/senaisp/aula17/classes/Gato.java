@@ -9,13 +9,12 @@ public class Gato extends Felino {
 
 	public void setRaca(String raca) {
 		Raca = raca;
-
 	}
-
 	@Override
 	public void Falar() {
-		// TODO Auto-generated method stub
+		//Aqui fica visivel o protected porque é descendente do Mamife*ro
+		AnoNascimento = 2000;
 		super.Falar();
-		System.out.println("Miau Miau Miau");
+		System.out.println("MIAUUUU!");
 	}
 }
