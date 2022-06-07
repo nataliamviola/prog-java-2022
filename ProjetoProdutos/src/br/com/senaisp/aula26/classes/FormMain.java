@@ -16,7 +16,8 @@ import javax.swing.border.EmptyBorder;
 public class FormMain extends JFrame {
 
 	private JPanel contentPane;
-
+	private Produto prod;
+	
 	/**
 	 * Launch the application.
 	 */
@@ -39,6 +40,8 @@ public class FormMain extends JFrame {
 	public FormMain() {
 		//Criando o objeto de eventos de Click
 		EventoClick evtClick = new EventoClick ();
+		
+		prod = new Produto();
 		
 		
 		setTitle("Formulario Principal");
@@ -83,7 +86,7 @@ public class FormMain extends JFrame {
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
 	}
-	//Actipn Listener é uma interface
+	//Action Listener é uma interface
 	class EventoClick implements ActionListener {
 
 		@Override
@@ -92,6 +95,9 @@ public class FormMain extends JFrame {
 			switch (((JMenuItem)cmp) .getText()) 
 			{
 			case "Adicionar" : FormManutencao fmt = new FormManutencao ();
+			prod.novo();
+			fmt.setProd(prod);
+			fmt.setTipoEdicao(1);
 			fmt.setVisible(true);
 			break;
 			

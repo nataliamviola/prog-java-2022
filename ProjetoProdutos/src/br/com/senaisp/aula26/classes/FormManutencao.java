@@ -2,23 +2,31 @@ package br.com.senaisp.aula26.classes;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import java.awt.GridLayout;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
-import javax.swing.JFormattedTextField;
 import java.awt.FlowLayout;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.text.NumberFormat;
+
+import javax.swing.JButton;
+import javax.swing.JFormattedTextField;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
+import javax.swing.text.NumberFormatter;
 
 public class FormManutencao extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField textCodigo;
+	private JFormattedTextField fmtCodigo;
 	private JTextField textDescricao;
-
+	private int tipoEdicao;
+	private JFormattedTextField fmtPreco;
+	private Produto prod;
+	
+	
 	/**
 	 * Launch the application.
 	 */
@@ -39,6 +47,8 @@ public class FormManutencao extends JFrame {
 	 * Create the frame.
 	 */
 	public FormManutencao() {
+		EventoClick evtClick = new EventoClick();
+		
 		setTitle("Manuten\u00E7\u00E3o de Produtos");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 672, 472);
@@ -52,9 +62,11 @@ public class FormManutencao extends JFrame {
 		
 		JButton btnGravar = new JButton("Gravar");
 		panelBotoes.add(btnGravar);
+		btnGravar.addActionListener(evtClick);
 		
 		JButton btnCancelar = new JButton("Cancelar");
 		panelBotoes.add(btnCancelar);
+		btnCancelar.addActionListener(evtClick);
 		
 		JPanel panelCorpo = new JPanel();
 		contentPane.add(panelCorpo, BorderLayout.NORTH);
@@ -68,9 +80,17 @@ public class FormManutencao extends JFrame {
 		JLabel lblCodigo = new JLabel("C\u00F3digo");
 		panelCodigo.add(lblCodigo);
 		
-		textCodigo = new JTextField();
-		panelCodigo.add(textCodigo);
-		textCodigo.setColumns(10);
+		NumberFormat fmtI = NumberFormat.getInstance(); //criando um formato para o numero Inteiro
+		NumberFormatter fmttI = new NumberFormatter (fmtI);
+		fmttI.setValueClass (Integer.class);
+		fmttI.setMinimum(0);
+		fmttI.setMaximum(Integer.MAX_VALUE);
+		fmttI.setAllowsInvalid(false);
+		
+		fmtCodigo = new JFormattedTextField(fmttI);
+		panelCodigo.add(fmtCodigo);
+		fmtCodigo.setColumns(10);
+		fmtCodigo.setValue(0);
 		
 		JPanel panelDescricao = new JPanel();
 		FlowLayout flowLayout_1 = (FlowLayout) panelDescricao.getLayout();
@@ -92,9 +112,49 @@ public class FormManutencao extends JFrame {
 		JLabel lblPreco = new JLabel("Pre\u00E7o");
 		panelPreco.add(lblPreco);
 		
-		JFormattedTextField fmtPreco = new JFormattedTextField();
+		NumberFormat fmt = NumberFormat.getCurrencyInstance(); //formato
+		NumberFormatter fmtt = new NumberFormatter (fmt);  //formatador de numeros (mascara)
+		fmtt.setMinimum((0.00));		
+		
+		fmtPreco = new JFormattedTextField(fmtt);
 		fmtPreco.setColumns(10);
+		fmtPreco.setValue(0.00);
 		panelPreco.add(fmtPreco);
 	}
 
+	public void setTipoEdicao(int tipoEdicao) {
+		this.tipoEdicao = tipoEdicao;
+		//operação 1 - Cadastrar, 2-Consultar, 3-Alterar, 4-Excluir
+		switch (tipoEdicao) {
+		case 1: 
+			fmtCodigo.setValue(prod.getCodigo());
+			textDescricao.setText(prod.getDescricao());
+			fmtPreco.setValue(prod.getPreco());
+			break;
+		}
+	}
+
+	public void setProd(Produto prod) {
+		this.prod = prod;
+	}
+	class EventoClick implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			Object cmp = e.getSource();
+			if (((JButton) cmp).getText ()== "Gravar") {
+				prod.setCodigo ((int) fmtCodigo.getValue());
+				prod.setDescricao(textDescricao.getText());
+				prod.setPreco((double) fmtPreco.getValue());
+				
+				prod.adicionar ();
+								
+			} else {
+				dispose ();
+			}
+			
+		}
+		
+	}
+	
 }
