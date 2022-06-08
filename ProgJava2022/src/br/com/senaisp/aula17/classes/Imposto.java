@@ -9,9 +9,6 @@ package br.com.senaisp.aula17.classes;
 public class Imposto {
 	private double BaseCalculo;
 	private double Aliquota;
-	public Imposto(int i, int j) {
-		// TODO Auto-generated constructor stub
-	}
 	/**
 	 * Metodo que retorna o valor do imposto calculado com base
 	 * nos campos BaseCalculo e Aliquota

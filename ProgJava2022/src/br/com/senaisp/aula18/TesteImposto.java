@@ -13,7 +13,7 @@ public class TesteImposto {
 		//Usando um constructor com valores iniciais nele
 		Imposto impap=null;
 		try {
-			impap = new Imposto(4000,15);
+			impap = new Imposto();
 			System.out.println(impap.calcularImposto());
 		} catch (Exception e1) {
 			// TODO Auto-generated catch block
