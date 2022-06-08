@@ -2,6 +2,8 @@ package br.com.senaisp.aula26.classes;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -15,6 +17,8 @@ public class FormListarProduto extends JFrame {
 
 	private JPanel contentPane;
 	private JTable tblProdutos;
+	private Produto prod;
+	private DefaultTableModel tblMdProd;
 
 	/**
 	 * Launch the application.
@@ -49,20 +53,35 @@ public class FormListarProduto extends JFrame {
 		
 		JButton btnFechar = new JButton("Fechar");
 		panelBotoes.add(btnFechar);
+		btnFechar.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				dispose ();
+				
+			}
+		});
+		
 		
 		JScrollPane scrTabela = new JScrollPane();
 		contentPane.add(scrTabela, BorderLayout.CENTER);
+		String cabecalho [] = {"Código", "Descrição", "Preço"};
+		tblMdProd = new DefaultTableModel (cabecalho, 0);
+				
+		tblProdutos = new JTable(tblMdProd);
 		
-		tblProdutos = new JTable();
-		tblProdutos.setModel(new DefaultTableModel(
-			new Object[][] {
-				{null, null, null},
-			},
-			new String[] {
-				"C\u00F3digo", "Descri\u00E7\u00E3o", "Pre\u00E7o"
-			}
-		));
 		scrTabela.setViewportView(tblProdutos);
+	}
+
+	public void setProd(Produto prod) {
+		this.prod = prod;
+		for (int intLin = 0; intLin<prod.getListaSize(); intLin++) {
+			Produto it = prod.getListaProdutos().get(intLin);
+			Object item[] = {it.getCodigo(), it.getDescricao(), it.getPreco()};
+			
+			tblMdProd.addRow(item);
+		}
+		
 	}
 
 }
