@@ -4,14 +4,14 @@ public class Produto {
 	private String nome;
 	private int qtde;
 	private double preco;
-	
+
 	public Produto(String nome, int qtde, double preco) {
 		super();
 		this.nome = nome;
 		this.qtde = qtde;
 		this.preco = preco;
 	}
-//getters and setters
+
 	public String getNome() {
 		return nome;
 	}
@@ -36,7 +36,7 @@ public class Produto {
 		this.preco = preco;
 	}
 	
-	public double precoTotal () {
-		return this.preco * this.qtde;
+	public double precoTotal() {
+		return preco * qtde;
 	}
 }
