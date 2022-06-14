@@ -1,6 +1,5 @@
 package br.com.senaisp.aula26.classes;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,14 +8,11 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JPanel;
 import javax.swing.JSeparator;
-import javax.swing.border.EmptyBorder;
 
-public class FormMain extends JFrame {
+public class FormMain {
 
-	private JPanel contentPane;
-	private Produto prod;
+	private JFrame frmMenuPrincipal;
 
 	/**
 	 * Launch the application.
@@ -25,8 +21,8 @@ public class FormMain extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					FormMain frame = new FormMain();
-					frame.setVisible(true);
+					FormMain window = new FormMain();
+					window.frmMenuPrincipal.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -35,111 +31,56 @@ public class FormMain extends JFrame {
 	}
 
 	/**
-	 * Create the frame.
+	 * Create the application.
 	 */
 	public FormMain() {
-		// Criando o objeto de eventos de Click
-		EventoClick evtClick = new EventoClick();
+		initialize();
+	}
 
-		prod = new Produto();
-
-		setTitle("Formulario Principal");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 700, 552);
-		setLocationRelativeTo(null);
+	/**
+	 * Initialize the contents of the frame.
+	 */
+	private void initialize() {
+		EventoClick evt = new EventoClick();
 		
+		frmMenuPrincipal = new JFrame();
+		frmMenuPrincipal.setTitle("Menu Principal");
+		frmMenuPrincipal.setBounds(100, 100, 682, 425);
+		frmMenuPrincipal.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JMenuBar menuBar = new JMenuBar();
-		setJMenuBar(menuBar);
-
-		JMenu mnProdutos = new JMenu("Produtos");
-		mnProdutos.setMnemonic('P');
-		menuBar.add(mnProdutos);
-
-		JMenuItem mntmAdicionar = new JMenuItem("Adicionar");
-		mnProdutos.add(mntmAdicionar);
-		mntmAdicionar.addActionListener(evtClick);
-
-		JMenuItem mntmConsultar = new JMenuItem("Consultar");
-		mnProdutos.add(mntmConsultar);
-		mntmConsultar.addActionListener(evtClick);
-
-		JMenuItem mntmAlterar = new JMenuItem("Alterar");
-		mnProdutos.add(mntmAlterar);
-		mntmAlterar.addActionListener(evtClick);
-
-		JMenuItem mntmExcluir = new JMenuItem("Excluir");
-		mnProdutos.add(mntmExcluir);
-		mntmExcluir.addActionListener(evtClick);
-
+		frmMenuPrincipal.setJMenuBar(menuBar);
+		
+		JMenu mnCadastros = new JMenu("Cadastros");
+		mnCadastros.setMnemonic('C');
+		menuBar.add(mnCadastros);
+		
+		JMenuItem mntmCliente = new JMenuItem("Cliente");
+		mnCadastros.add(mntmCliente);
+		mntmCliente.addActionListener(evt);
+		
 		JSeparator separator = new JSeparator();
-		mnProdutos.add(separator);
-
-		JMenu mnNListar = new JMenu("Listar");
-		mnNListar.setMnemonic('L');
-		mnProdutos.add(mnNListar);
-
-		JMenuItem mntmProdAsc = new JMenuItem("Produtos Ascendentes");
-		mnNListar.add(mntmProdAsc);
-		mntmProdAsc.addActionListener(evtClick);
-
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		contentPane.setLayout(new BorderLayout(0, 0));
-		setContentPane(contentPane);
+		mnCadastros.add(separator);
+		
+		JMenuItem mntmSair = new JMenuItem("Sair");
+		mnCadastros.add(mntmSair);
+		mntmSair.addActionListener(evt);
 	}
+  class EventoClick implements ActionListener {
 
-	// Action Listener é uma interface
-	class EventoClick implements ActionListener {
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			Object cmp = e.getSource(); // cmp são os componentes (itens) do menu
-
-			FormManutencao fmt;
-			switch (((JMenuItem) cmp).getText()) {
-
-			case "Adicionar":
-				fmt = new FormManutencao();
-				prod.novo();
-				fmt.setProd(prod);
-				fmt.setTipoEdicao(1);
-				fmt.setVisible(true);
-				break;
-
-			case "Consultar":
-				fmt = new FormManutencao();
-				prod.novo();
-				fmt.setProd(prod);
-				fmt.setTipoEdicao(2);
-				fmt.setVisible(true);
-				break;
-
-			case "Alterar":
-				fmt = new FormManutencao();
-				prod.novo();
-				fmt.setProd(prod);
-				fmt.setTipoEdicao(3);
-				fmt.setVisible(true);
-				break;
-
-			case "Excluir":
-				fmt = new FormManutencao();
-				prod.novo();
-				fmt.setProd(prod);
-				fmt.setTipoEdicao(4);
-				fmt.setVisible(true);
-				break;
-
-			case "Produtos Ascendentes":
-				FormListarProduto fml = new FormListarProduto();
-				fml.setProd(prod);
-				fml.setVisible(true);
-				break;
-			}
-
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		Object cmp = e.getSource();
+		switch ( ((JMenuItem) cmp).getText() ) {
+		case "Cliente" :
+			FormCliente fmtCli = new FormCliente();
+			fmtCli.setVisible(true);
+			break;
+		case "Sair" :
+			frmMenuPrincipal.dispose();
+			break;
 		}
-
 	}
-
+	  
+  }
 }
