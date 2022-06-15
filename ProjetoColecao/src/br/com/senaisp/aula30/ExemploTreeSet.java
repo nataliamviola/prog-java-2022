@@ -15,15 +15,15 @@ public class ExemploTreeSet {
 		System.out.println("Exemplo de uso de interface List");
 		System.out.println();
 		
-		ex.insere("Blade Runner - O caçador de androides");
+		ex.insere("Blade Runner - O caçador de andróides");
 		ex.insere("O exterminador do futuro 2");
 		
 		ex.insere("Apocalipse Now");
 		ex.insere("Star Wars IV - Uma nova esperança");
 		
 		ex.insere("Curtindo a vida adoidado");
-		ex.insere("Dracula - D e Bram Stocker");
-		ex.insere("2001 - Uma odisseia no espaço");
+		ex.insere("Drácula - de Bram Stocker");
+		ex.insere("2001 - Uma odisséia no espaço");
 		
 		ex.imprimirLista();
 		
@@ -50,7 +50,7 @@ public class ExemploTreeSet {
 		System.out.println();
 		Iterator <String> iteratorLista = listaFilmes.iterator(); //usar o java Util. Iterator é um apoio da lista
 		while (iteratorLista.hasNext ()) {
-			System.out.println("titulo do filme:" + iteratorLista.next ());
+			System.out.println("Título do Filme: " + iteratorLista.next ());
 			
 		}
 		
