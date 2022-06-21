@@ -2,10 +2,13 @@ package br.com.senaisp.aula30.classes;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.lang.reflect.Array;
@@ -20,6 +23,11 @@ import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -134,8 +142,55 @@ public class Cliente {
 			}
 			return ret;
 		}
+		//serializando o objeto
+	public boolean gravarEstadoObjeto (String strArquivo) {
+		boolean ret = false;
+		File arq = new File(strArquivo);
+		try {
+			arq.delete();
+			arq.createNewFile();
+			FileOutputStream fos = new FileOutputStream(arq);
+			ObjectOutputStream objStm = new ObjectOutputStream(fos);
+			//gravar o objeto desejado
+			objStm.writeObject(lstClientes);
+			objStm.close();
+			ret = true;
+			
+		}catch (Exception e) {
+			e.printStackTrace(); //pra mostrar o erro
+		}
+				
+		return ret;
+		
+	}
+	//deserializar o objeto
+	public boolean lerEstadoObjeto (String strArquivo) {
+		boolean ret = false;
+		lstClientes.clear();
+		File arq = new File (strArquivo);
+		//verificando a existencia do arquivo
+		if (arq.exists()) {
+			try {
+				FileInputStream fis = new FileInputStream(arq);
+				ObjectInputStream oiStm = new ObjectInputStream(fis);
+				lstClientes = (ArrayList<Object[]>) oiStm.readObject();
+				oiStm.close();
+				ret=true;
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+			
+		}
 		
 		
+		
+		return ret;
+		
+	}
+	
+	
 	private boolean escreverCSV(String strArquivo) {
 		boolean ret = false;
 		try {
@@ -200,8 +255,52 @@ public class Cliente {
 	
 	
 	private boolean escreverXML(String strArquivo) {
-		// TODO Auto-generated method stub
-		return false;
+		boolean ret = false;
+		
+		DocumentBuilderFactory fact = DocumentBuilderFactory.newInstance();
+		try {
+			DocumentBuilder build = fact.newDocumentBuilder();
+			Document doc = build.newDocument();
+			
+			Element root = doc.createElement ("root");
+			doc.appendChild(root);
+			//percorrendo os itens para gerar os elementos xml
+			for (Object objs[]: lstClientes) {
+			Element linha = doc.createElement("row");
+			
+			linha.appendChild(criarNo(doc, "nome", (String) objs [0]));
+			linha.appendChild(criarNo(doc, "idade", Integer.toString((int) objs [1])));
+			linha.appendChild(criarNo(doc, "cpf", (String) objs [2]));
+			linha.appendChild(criarNo(doc, "rg", (String) objs [3]));
+			linha.appendChild(criarNo(doc, "data_nasc", dtFmt.format((Date) objs [4])));
+			
+			//adicionando a linha ao root
+			root.appendChild(linha);
+						
+			}
+			//iniciando o processo de gravação
+			TransformerFactory transfFact = TransformerFactory.newInstance();
+			Transformer transf = transfFact.newTransformer();
+			DOMSource dom = new DOMSource (doc);
+			FileOutputStream fos = new FileOutputStream(strArquivo);
+			StreamResult strRes = new StreamResult(fos);
+			
+			transf.transform(dom, strRes);
+			ret = true;
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		
+		return ret;
+	}
+
+	private Element criarNo(Document doc, String nomeNo, String conteudoNo) {
+		Element el = doc.createElement(nomeNo);
+		el.appendChild(doc.createTextNode(conteudoNo));
+		return el;
 	}
 
 	// criado os metodos
