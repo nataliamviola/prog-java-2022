@@ -15,8 +15,12 @@ public class TesteCliente {
 		for (Object obj []: cli.getLstClientes()) {
 			System.out.println(obj [0] + " - " + obj [1] + " - " + obj [2] + " - " + obj [3] + " - " + obj [4]);
 			
+			obj[0] += " - Alterado";
 		}
-
+		cli.getLstClientes().remove(5);
+		//cli.exportarArquivo("C:\\Users\\Aluno\\Downloads\\exportado.csv", TipoArquivo.CSV);
+		
+		cli.exportarArquivo("C:\\Users\\Aluno\\Downloads\\exportado.json", TipoArquivo.JSON);
 	}
 
 }
