@@ -8,7 +8,7 @@ public class ConexaoBD {
 	private static ConexaoBD instancia;
 	
 	private static final String DB_DRIVER = "mysql";
-	private static final String DB_DATABASE = "prog_java_2022";
+	private static final String DB_DATABASE = "proj_pess_natalia";
 	private static final String DB_HOST = "localhost";
 	private static final int DB_PORT = 3306;
 	private static final String DB_USER = "root";
