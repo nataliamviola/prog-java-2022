@@ -6,27 +6,45 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.text.MaskFormatter;
+
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.text.ParseException;
+import java.util.Date;
+
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import java.awt.FlowLayout;
+import javax.swing.SwingConstants;
+import java.awt.Color;
+import javax.swing.JFormattedTextField;
 
 public class FormClienteManutencao extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
-	private JTextField textField_3;
-	private JTextField textField_4;
-	private JTextField textField_5;
-	private JTextField textField_6;
-	private JTextField textField_7;
-	private JTextField textField_8;
-	private JTextField textField_9;
+	private JTextField textId;
+	private JTextField textNome;
+	private JTextField textTelefone;
+	private JTextField textEndereco;
+	private JTextField textNumero;
+	private JTextField textComplemento;
+	private JTextField textBairro;
+	private JTextField textCep;
+	private JTextField textCidade;
+	private JTextField textEstado;
+	
+	private JFormattedTextField fmtCPF;
+	
+	private DefaultTableModel tblMdCli;
+	private int linhaSelecionada;
+	private int tipoOperacao; 
+	private JButton btnConfirmar;
 
 	/**
 	 * Launch the application.
@@ -48,127 +66,234 @@ public class FormClienteManutencao extends JFrame {
 	 * Create the frame.
 	 */
 	public FormClienteManutencao() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		EventoClick evt = new EventoClick();
+		
+		setTitle("Manuten\u00E7\u00E3o de Clientes");
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 557, 508);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
 		
-		JPanel panel = new JPanel();
-		contentPane.add(panel, BorderLayout.SOUTH);
+		JPanel pnlBotoes = new JPanel();
+		contentPane.add(pnlBotoes, BorderLayout.SOUTH);
 		
 		JButton btnConfirmar = new JButton("Confirmar");
-		panel.add(btnConfirmar);
+		btnConfirmar.setBackground(Color.LIGHT_GRAY);
+		pnlBotoes.add(btnConfirmar);
+		btnConfirmar.addActionListener(evt);
 		
 		JButton btnCancelar = new JButton("Cancelar");
-		panel.add(btnCancelar);
+		btnCancelar.setBackground(Color.LIGHT_GRAY);
+		pnlBotoes.add(btnCancelar);
+		btnCancelar.addActionListener(evt);
 		
-		JPanel panel_1 = new JPanel();
-		contentPane.add(panel_1, BorderLayout.NORTH);
-		panel_1.setLayout(new GridLayout(10, 0, 0, 0));
+		JPanel pnlCorpo = new JPanel();
+		contentPane.add(pnlCorpo, BorderLayout.NORTH);
+		pnlCorpo.setLayout(new GridLayout(11, 0, 0, 0));
 		
 		JPanel pnlId = new JPanel();
 		FlowLayout flowLayout = (FlowLayout) pnlId.getLayout();
 		flowLayout.setAlignment(FlowLayout.LEFT);
-		panel_1.add(pnlId);
+		pnlCorpo.add(pnlId);
 		
 		JLabel lblId = new JLabel("Id");
 		pnlId.add(lblId);
 		
-		textField = new JTextField();
-		pnlId.add(textField);
-		textField.setColumns(10);
+		textId = new JTextField();
+		pnlId.add(textId);
+		textId.setColumns(10);
 		
-		JPanel panel_3 = new JPanel();
-		panel_1.add(panel_3);
+		JPanel pnlNome = new JPanel();
+		FlowLayout flowLayout_1 = (FlowLayout) pnlNome.getLayout();
+		flowLayout_1.setAlignment(FlowLayout.LEFT);
+		pnlCorpo.add(pnlNome);
 		
-		JLabel lblNewLabel_1 = new JLabel("New label");
-		panel_3.add(lblNewLabel_1);
+		JLabel lblNome = new JLabel("Nome");
+		pnlNome.add(lblNome);
 		
-		textField_1 = new JTextField();
-		panel_3.add(textField_1);
-		textField_1.setColumns(10);
+		textNome = new JTextField();
+		pnlNome.add(textNome);
+		textNome.setColumns(50);
 		
-		JPanel panel_4 = new JPanel();
-		panel_1.add(panel_4);
+		JPanel pnlCPF = new JPanel();
+		FlowLayout fl_pnlCPF = (FlowLayout) pnlCPF.getLayout();
+		fl_pnlCPF.setAlignment(FlowLayout.LEFT);
+		pnlCorpo.add(pnlCPF);
 		
-		JLabel lblNewLabel_2 = new JLabel("New label");
-		panel_4.add(lblNewLabel_2);
+		JLabel lblCPF = new JLabel("CPF");
+		pnlCPF.add(lblCPF);
 		
-		textField_2 = new JTextField();
-		panel_4.add(textField_2);
-		textField_2.setColumns(10);
+		try {
+			MaskFormatter fmtDoc = new MaskFormatter("###.###.###-##");
+			fmtCPF = new JFormattedTextField(fmtDoc);
+			fmtCPF.setColumns(15);
+			pnlCPF.add(fmtCPF);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			
+						
+			
+		}
 		
-		JPanel panel_5 = new JPanel();
-		panel_1.add(panel_5);
 		
-		JLabel lblNewLabel_3 = new JLabel("New label");
-		panel_5.add(lblNewLabel_3);
 		
-		textField_3 = new JTextField();
-		panel_5.add(textField_3);
-		textField_3.setColumns(10);
+		JPanel pnlTelefone = new JPanel();
+		FlowLayout flowLayout_3 = (FlowLayout) pnlTelefone.getLayout();
+		flowLayout_3.setAlignment(FlowLayout.LEFT);
+		pnlCorpo.add(pnlTelefone);
 		
-		JPanel panel_6 = new JPanel();
-		panel_1.add(panel_6);
+		JLabel lblTelefone = new JLabel("Telefone");
+		pnlTelefone.add(lblTelefone);
 		
-		JLabel lblNewLabel_4 = new JLabel("New label");
-		panel_6.add(lblNewLabel_4);
+		textTelefone = new JTextField();
+		textTelefone.setText("(  )      -");
+		pnlTelefone.add(textTelefone);
+		textTelefone.setColumns(10);
 		
-		textField_4 = new JTextField();
-		panel_6.add(textField_4);
-		textField_4.setColumns(10);
+		JPanel pnlEndereco = new JPanel();
+		FlowLayout flowLayout_4 = (FlowLayout) pnlEndereco.getLayout();
+		flowLayout_4.setAlignment(FlowLayout.LEFT);
+		pnlCorpo.add(pnlEndereco);
 		
-		JPanel panel_7 = new JPanel();
-		panel_1.add(panel_7);
+		JLabel lblEndereco = new JLabel("Endere\u00E7o");
+		pnlEndereco.add(lblEndereco);
 		
-		JLabel lblNewLabel_5 = new JLabel("New label");
-		panel_7.add(lblNewLabel_5);
+		textEndereco = new JTextField();
+		pnlEndereco.add(textEndereco);
+		textEndereco.setColumns(50);
 		
-		textField_5 = new JTextField();
-		panel_7.add(textField_5);
-		textField_5.setColumns(10);
+		JPanel pnlNumero = new JPanel();
+		FlowLayout flowLayout_5 = (FlowLayout) pnlNumero.getLayout();
+		flowLayout_5.setAlignment(FlowLayout.LEFT);
+		pnlCorpo.add(pnlNumero);
 		
-		JPanel panel_8 = new JPanel();
-		panel_1.add(panel_8);
+		JLabel lblNumero = new JLabel("Numero");
+		pnlNumero.add(lblNumero);
 		
-		JLabel lblNewLabel_6 = new JLabel("New label");
-		panel_8.add(lblNewLabel_6);
+		textNumero = new JTextField();
+		pnlNumero.add(textNumero);
+		textNumero.setColumns(7);
 		
-		textField_6 = new JTextField();
-		panel_8.add(textField_6);
-		textField_6.setColumns(10);
+		JPanel pnlComplemento = new JPanel();
+		FlowLayout flowLayout_6 = (FlowLayout) pnlComplemento.getLayout();
+		flowLayout_6.setAlignment(FlowLayout.LEFT);
+		pnlCorpo.add(pnlComplemento);
 		
-		JPanel panel_9 = new JPanel();
-		panel_1.add(panel_9);
+		JLabel lblComplemento = new JLabel("Complemento");
+		pnlComplemento.add(lblComplemento);
 		
-		JLabel lblNewLabel_7 = new JLabel("New label");
-		panel_9.add(lblNewLabel_7);
+		textComplemento = new JTextField();
+		pnlComplemento.add(textComplemento);
+		textComplemento.setColumns(20);
 		
-		textField_7 = new JTextField();
-		panel_9.add(textField_7);
-		textField_7.setColumns(10);
+		JPanel pnlBairro = new JPanel();
+		FlowLayout flowLayout_7 = (FlowLayout) pnlBairro.getLayout();
+		flowLayout_7.setAlignment(FlowLayout.LEFT);
+		pnlCorpo.add(pnlBairro);
 		
-		JPanel panel_10 = new JPanel();
-		panel_1.add(panel_10);
+		JLabel lblBairro = new JLabel("Bairro");
+		pnlBairro.add(lblBairro);
 		
-		JLabel lblNewLabel_8 = new JLabel("New label");
-		panel_10.add(lblNewLabel_8);
+		textBairro = new JTextField();
+		pnlBairro.add(textBairro);
+		textBairro.setColumns(30);
 		
-		textField_8 = new JTextField();
-		panel_10.add(textField_8);
-		textField_8.setColumns(10);
+		JPanel pnlCep = new JPanel();
+		FlowLayout flowLayout_8 = (FlowLayout) pnlCep.getLayout();
+		flowLayout_8.setAlignment(FlowLayout.LEFT);
+		pnlCorpo.add(pnlCep);
 		
-		JPanel panel_11 = new JPanel();
-		panel_1.add(panel_11);
+		JLabel lblCep = new JLabel("Cep");
+		pnlCep.add(lblCep);
 		
-		JLabel lblNewLabel_9 = new JLabel("New label");
-		panel_11.add(lblNewLabel_9);
+		textCep = new JTextField();
+		pnlCep.add(textCep);
+		textCep.setColumns(15);
 		
-		textField_9 = new JTextField();
-		panel_11.add(textField_9);
-		textField_9.setColumns(10);
+		JPanel pnlCidade = new JPanel();
+		FlowLayout flowLayout_9 = (FlowLayout) pnlCidade.getLayout();
+		flowLayout_9.setAlignment(FlowLayout.LEFT);
+		pnlCorpo.add(pnlCidade);
+		
+		JLabel lblCidade = new JLabel("Cidade");
+		pnlCidade.add(lblCidade);
+		
+		textCidade = new JTextField();
+		pnlCidade.add(textCidade);
+		textCidade.setColumns(40);
+		
+		JPanel pnlEstado = new JPanel();
+		FlowLayout flowLayout_10 = (FlowLayout) pnlEstado.getLayout();
+		flowLayout_10.setAlignment(FlowLayout.LEFT);
+		pnlCorpo.add(pnlEstado);
+		
+		JLabel lblEstado = new JLabel("Estado");
+		pnlEstado.add(lblEstado);
+		
+		textEstado = new JTextField();
+		pnlEstado.add(textEstado);
+		textEstado.setColumns(40);
 	}
 
+	public void setTblMdCli(DefaultTableModel tblMdCli) {
+		this.tblMdCli = tblMdCli;
+	}
+
+	public void setLinhaSelecionada(int linhaSelecionada) {
+		this.linhaSelecionada = linhaSelecionada;
+	}
+
+	public void setTipoOperacao(int tipoOperacao) {
+		this.tipoOperacao = tipoOperacao;
+		switch(tipoOperacao) {
+		case 1:
+		fmtCPF.setValue(tblMdCli.getValueAt(linhaSelecionada, 2));
+		}
+		
+	}
+
+	public void setBtnConfirmar(JButton btnConfirmar) {
+		this.btnConfirmar = btnConfirmar;
+	}
+
+	class EventoClick implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			Object cmp = e.getSource();
+			switch ( ((JButton) cmp).getText() ) {
+			case "Confirmar" :
+				switch (tipoOperacao) {
+				case 1 :
+					Object it[] = {
+							textId.getText(),
+							textNome.getText(),
+							textTelefone.getText(),
+							fmtCPF.getValue()
+					};
+					tblMdCli.addRow(it);
+					break;
+				case 3 :
+					tblMdCli.setValueAt(textNome.getText(),linhaSelecionada, 1);
+					tblMdCli.setValueAt(fmtCPF.getValue(), linhaSelecionada, 2);
+					tblMdCli.setValueAt(textTelefone.getText(),linhaSelecionada, 3);
+					fazer a adição dos outros itens de acordo com a ordem no design
+					
+					
+					break;
+				case 4 :
+					tblMdCli.removeRow(linhaSelecionada);
+					break;
+				}
+			case "Cancelar":
+				dispose();
+			}
+		}
+		
+	}
+	
 }
